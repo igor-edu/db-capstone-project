@@ -1,0 +1,55 @@
+        Little Lemon Database Tables 
+
+========== Employees ==========
+PK  EmployeeID          SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT
+    FirstName           VARCHAR(100) NOT NULL
+    LastName            VARCHAR(100) NOT NULL 
+    Role                VARCHAR(100) NOT NULL 
+    Address             VARCHAR(200) NOT NULL 
+    ContactNumber       VARCHAR(20) NOT NULL 
+    Email               VARCHAR(100) NOT NULL 
+    Annual Salary       DECIMAL(8,2) NOT NULL
+
+
+========== Customers ==========
+PK  CustomerID          SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT
+    FirstName           VARCHAR(100) NOT NULL 
+    LastName            VARCHAR(100) NOT NULL 
+    Address             VARCHAR(200) 
+    ContactNo           VARCHAR(20) 
+    Email               VARCHAR(100)
+
+
+========== MenuItems ==========
+PK  ItemID              SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT
+    Name                VARCHAR(100) NOT NULL 
+    Type                VARCHAR(100) NOT NULL 
+    Cuisine             VARCHAR(100) NOT NULL 
+    Price               DECIMAL(8,2) NOT NULL 
+
+
+========== Bookings ========== 
+PK  BookingID           INT PRIMARY KEY AUTO_INCREMENT
+    Time                TIMESTAMP NOT NULL 
+    TableNo             SMALLINT UNSIGNED NOT NULL 
+FK  CustomerID          SMALLINT UNSIGNED NOT NULL REFERENCES Customers.CustomerID
+
+
+========== Orders ==========
+PK  OrderID             INT PRIMARY KEY AUTO_INCREMENT
+FK  BookingID           INT NOT NULL REFERENCES Bookings.BookingID
+FK  EmployeeID          SMALLINT UNSIGNED NOT NULL REFERENCES Employees.EmployeeID
+
+
+========== OrderItems ==========
+PK  OrderItemID         INT PRIMARY KEY AUTO_INCREMENT
+FK  OrderID             INT NOT NULL REFERENCES Orders.OrderID
+FK  ItemID              SMALLINT UNSIGNED NOT NULL REFERENCES MenuItems.ItemID
+    Quantity            TINYINT UNSIGNED NOT NULL 
+
+
+========== OrderStatuses ========== 
+PK  OrderStatusID       INT PRIMARY KEY AUTO_INCREMENT
+FK  OrderID             INT NOT NULL REFERENCES Orders.OrderID
+    StatusChanged       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    Status              ENUM('received', 'delivered', 'paid') NOT NULL     
